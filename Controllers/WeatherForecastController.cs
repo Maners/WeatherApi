@@ -1,9 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
+using WeatherApi.Entity;
+using WeatherApi.Services;
 
 namespace WeatherApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Produces("application/json")]
     public class WeatherForecastController : ControllerBase
     {
         private static readonly string[] Summaries = new[]
@@ -18,16 +21,12 @@ namespace WeatherApi.Controllers
             _logger = logger;
         }
 
-        [HttpGet(Name = "GetWeatherForecast")]
-        public IEnumerable<WeatherForecast> Get()
+        [HttpGet("/currentWeather/{latitude},{longitude}", Name = "GetCurrentWeather")]
+        public async Task<WeatherInfo> GetCurrentWeather(double latitude = 39.7456, double longitude = -97.0892)
         {
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                TemperatureC = Random.Shared.Next(-20, 55),
-                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-            })
-            .ToArray();
+            var service = new NationalWeatherService();
+
+            return await service.GetCurrentWeather(latitude, longitude);
         }
     }
 }

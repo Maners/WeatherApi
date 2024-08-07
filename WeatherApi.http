@@ -1,6 +1,6 @@
 @WeatherApi_HostAddress = http://localhost:5025
 
-GET {{WeatherApi_HostAddress}}/weatherforecast/
+GET {{WeatherApi_HostAddress}}/currentWeather/39.7656,-97.0892
 Accept: application/json
 
 ###
